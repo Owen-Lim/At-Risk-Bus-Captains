@@ -1,0 +1,28 @@
+AT-RISK BUS CAPTAINS - SUMMARY
+============================================================
+Alarm period: 2024-03-01 to 2024-03-31
+Drivers: 1544 (scored: 1519, fewer than 5 active days: 25)
+Accident records used: 185; accident drivers (window 'all', scored drivers): 158
+
+1. STABILITY OF BEHAVIOUR (days 1-15 vs 16-31)
+   Spearman correlation 0.66; AUC 0.851 (95% CI 0.818-0.881); precision at top 10% 42.9% (lift 4.3x).
+   63 drivers are in the top decile in both halves (flagged 'persistent high-risk').
+
+2. SCORE ROBUSTNESS TO THE CHOICE OF WEIGHTS
+   Rank correlation with default ranking: mean 0.99, worst 0.97; top-decile overlap mean 0.82.
+
+3. DO ALARMS RELATE TO ACCIDENTS?
+   Rule-based score vs accidents (any date): AUC 0.550 (95% CI 0.500-0.599).
+   Features whose 95% interval excludes 0.5 (unadjusted for multiple tests): Harsh Braking rate, Forward Collision Warning rate, Behaviour group rate, Collision group rate, Alarms per hour (all types)
+   Forecast check, accident window 'future': best model 'Logistic regression' AUC 0.514 (95% CI 0.443-0.580); best baseline 'Baseline: total alarms' AUC 0.556; gain -0.042 (95% CI -0.101 to +0.019).
+      -> no evidence of predictive signal above chance; does not clearly beat the best simple baseline.
+   Forecast check, accident window 'all': best model 'Logistic regression' AUC 0.547 (95% CI 0.500-0.591); best baseline 'Baseline: total alarms' AUC 0.553; gain -0.006 (95% CI -0.039 to +0.025).
+      -> model AUC above chance; does not clearly beat the best simple baseline.
+
+LIMITATIONS
+- Duty hours are estimated from alarm timestamps, not real driving hours.
+- The risk score ranks alarm behaviour; it is not a calibrated accident probability.
+- One month of alarms and a small number of accident drivers: wide intervals.
+- 'Association' uses accidents from any date, so it is NOT a forecast.
+- Several features are tested at once; unadjusted intervals can look significant by chance (see the multiple-test columns in association_by_feature.csv).
+- Do not use these results alone for employment or disciplinary decisions.
